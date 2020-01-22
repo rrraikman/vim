@@ -1,8 +1,5 @@
 " Show relative numbers
 set relativenumber
-
-" Map Ecs to jj
-inoremap jj <Esc>
  
 " Highlight search text
 set hlsearch
