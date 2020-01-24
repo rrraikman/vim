@@ -15,6 +15,3 @@ nnoremap r <C-R>
 
 " Enable syntax highlighting
 syntax on
-
-" Industry color scheme
-colorscheme industry
