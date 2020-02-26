@@ -15,3 +15,7 @@ nnoremap r <C-R>
 
 " Enable syntax highlighting
 syntax on
+
+" Show status bar with full file path
+set laststatus=2
+set statusline+=%F
