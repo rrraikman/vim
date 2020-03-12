@@ -1,5 +1,5 @@
 " Show relative numbers
-set relativenumber
+set number relativenumber
  
 " Highlight search text
 set hlsearch
