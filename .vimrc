@@ -1,5 +1,7 @@
-" Show relative numbers
+" Relative numbers for normal mode, normal numbers for insert
 set number relativenumber
+autocmd InsertEnter * :set norelativenumber
+autocmd InsertLeave * :set relativenumber
  
 " Highlight search text
 set hlsearch
