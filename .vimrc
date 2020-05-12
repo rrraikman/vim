@@ -4,9 +4,6 @@ set number relativenumber
 " Highlight search text
 set hlsearch
 
-" Map space to :nohl to clear search highlight
-nnoremap <silent> <space> :nohl<CR>
-
 " Incrementally search for string
 set incsearch
 
