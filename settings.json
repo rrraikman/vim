@@ -1,0 +1,12 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+    "vim.normalModeKeyBindings": [
+        {
+            "before": ["r"],
+            "after": ["<C-r>"]
+        }
+   ],
+    "editor.lineNumbers": "relative"
+}
