@@ -10,6 +10,7 @@ vim.pack.add({
   "https://github.com/MunifTanjim/nui.nvim",
   "https://github.com/nvim-tree/nvim-web-devicons",
   { src = "https://github.com/nvim-neo-tree/neo-tree.nvim", version = "v3.x" },
+  { src = "https://github.com/akinsho/bufferline.nvim", version = vim.version.range("4") },
 })
 
 require("neo-tree").setup({
@@ -23,6 +24,12 @@ require("neo-tree").setup({
       hide_gitignored = true,
       hide_by_name = { ".git", "node_modules" },
     },
+  },
+})
+
+require("bufferline").setup({
+  options = {
+    offsets = { { filetype = "neo-tree", text = "Explorer", separator = true } },
   },
 })
 
