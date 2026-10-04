@@ -152,6 +152,10 @@ local function toggle_float_term()
     })
     -- A single <C-\> here would swallow <C-\><C-n>; a double tap leaves it working.
     vim.keymap.set("t", "<C-\\><C-\\>", toggle_float_term, { buffer = float_term.buf })
+    vim.keymap.set("t", "<Esc>", toggle_float_term, { buffer = float_term.buf })
+    vim.keymap.set("t", "<C-\\><Esc>", function()
+      vim.api.nvim_chan_send(vim.bo[float_term.buf].channel, "\27")
+    end, { buffer = float_term.buf, desc = "Send Esc to the shell" })
     vim.keymap.set("n", "<Esc>", toggle_float_term, { buffer = float_term.buf })
   end
   vim.cmd.startinsert()
