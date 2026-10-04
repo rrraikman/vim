@@ -119,6 +119,44 @@ vim.keymap.set("n", "<leader>g", "<cmd>Neotree git_status<cr>", { desc = "Change
 vim.keymap.set("n", "<leader>b", "<cmd>Neotree buffers<cr>", { desc = "Open buffers" })
 vim.keymap.set("n", "<leader>x", function() close_buffer() end, { desc = "Close file" })
 
+local float_term = {}
+local function toggle_float_term()
+  if float_term.win and vim.api.nvim_win_is_valid(float_term.win) then
+    vim.api.nvim_win_hide(float_term.win)
+    return
+  end
+  local fresh = not (float_term.buf and vim.api.nvim_buf_is_valid(float_term.buf))
+  if fresh then
+    float_term.buf = vim.api.nvim_create_buf(false, true)
+  end
+  local width, height = math.floor(vim.o.columns * 0.8), math.floor(vim.o.lines * 0.8)
+  float_term.win = vim.api.nvim_open_win(float_term.buf, true, {
+    relative = "editor",
+    border = "rounded",
+    width = width,
+    height = height,
+    col = math.floor((vim.o.columns - width) / 2),
+    row = math.floor((vim.o.lines - height) / 2),
+  })
+  if fresh then
+    vim.fn.jobstart(vim.o.shell, {
+      term = true,
+      on_exit = function()
+        vim.schedule(function()
+          if vim.api.nvim_buf_is_valid(float_term.buf) then
+            vim.api.nvim_buf_delete(float_term.buf, { force = true })
+          end
+        end)
+      end,
+    })
+    -- A single <C-\> here would swallow <C-\><C-n>; a double tap leaves it working.
+    vim.keymap.set("t", "<C-\\><C-\\>", toggle_float_term, { buffer = float_term.buf })
+    vim.keymap.set("n", "<Esc>", toggle_float_term, { buffer = float_term.buf })
+  end
+  vim.cmd.startinsert()
+end
+vim.keymap.set("n", "<C-\\>", toggle_float_term, { desc = "Floating terminal" })
+
 require("fzf-lua").setup({})
 vim.keymap.set("n", "<C-p>", "<cmd>FzfLua files<cr>", { desc = "Find file" })
 vim.keymap.set("n", "<leader>f", "<cmd>FzfLua files<cr>", { desc = "Find file" })

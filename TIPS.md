@@ -64,6 +64,16 @@ Close with `Space x` or the tab's `×`. Don't use `:bd`: with the tree open it c
 
 A `:terminal` gets a tab too; closing it ends the shell.
 
+## Terminal
+
+| Key | Action |
+|---|---|
+| `Ctrl-\` | Open the floating terminal; it reopens the same shell, history and running commands intact |
+| `Ctrl-\` `Ctrl-\` (inside it) | Hide it |
+| `Ctrl-\` `Ctrl-n` (inside it) | Normal mode, to scroll and copy output (*built-in*); `Esc` from there hides it |
+
+`exit` closes the shell; the next `Ctrl-\` starts a fresh one. For a terminal in a split instead, `:botright 15split | terminal` opens a panel along the bottom.
+
 ## Code intelligence
 
 Works in TypeScript/JavaScript, shell, YAML, JSON and Lua.
