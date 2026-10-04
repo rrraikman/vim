@@ -39,6 +39,8 @@ Open pickers from the editor side, not with the cursor in the tree: the file ope
 
 ### File tree
 
+Like VS Code, git-ignored files and folders (`node_modules`, `cdk.out`) are shown in grey rather than hidden.
+
 | Key | Action |
 |---|---|
 | `Enter` | Open file / expand folder |
@@ -48,7 +50,7 @@ Open pickers from the editor side, not with the cursor in the tree: the file ope
 | `y` `x` `p` | Copy / cut / paste, for moving several files |
 | `s` / `S` | Open in a vertical / horizontal split |
 | `P` | Preview without opening |
-| `H` | Show hidden files |
+| `H` | Show hidden items (only `.git`, `.DS_Store` and `thumbs.db` are hidden) |
 | `/` | Filter the tree |
 | `.` / `Backspace` | Make the folder under the cursor the root / go up |
 | `[g` / `]g` | Previous / next git-modified file |

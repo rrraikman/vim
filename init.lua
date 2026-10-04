@@ -27,6 +27,8 @@ vim.pack.add({
 
 require("vscode").setup({})
 vim.cmd.colorscheme("vscode")
+-- VS Code's gitDecoration.ignoredResourceForeground; vscode.nvim leaves neo-tree's blue
+vim.api.nvim_set_hl(0, "NeoTreeGitIgnored", { fg = "#8c8c8c" })
 
 require("lualine").setup({
   options = { theme = "vscode", globalstatus = true },
@@ -55,10 +57,13 @@ require("neo-tree").setup({
     follow_current_file = { enabled = true },
     use_libuv_file_watcher = true,
     hijack_netrw_behavior = "open_default",
+    -- Match VS Code: hide only what its files.exclude does, and show gitignored
+    -- files (node_modules, cdk.out) dimmed rather than hiding them.
     filtered_items = {
       hide_dotfiles = false,
-      hide_gitignored = true,
-      hide_by_name = { ".git", "node_modules" },
+      hide_gitignored = false,
+      hide_ignored = false,
+      hide_by_name = { ".git", ".DS_Store", "thumbs.db" },
     },
   },
 })
