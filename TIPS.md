@@ -2,8 +2,6 @@
 
 `Space` is the leader key. Mappings marked *built-in* come with Neovim; the rest are set in `init.lua`.
 
-Press `Space` (or `g`, `]`, `[`) and wait a moment: a menu lists every key that can follow.
-
 ## Getting around files
 
 | Key | Action |

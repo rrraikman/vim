@@ -22,7 +22,6 @@ vim.pack.add({
   "https://github.com/b0o/SchemaStore.nvim",
   "https://github.com/nvim-lualine/lualine.nvim",
   "https://github.com/lewis6991/gitsigns.nvim",
-  "https://github.com/folke/which-key.nvim",
 })
 
 require("vscode").setup({})
@@ -195,9 +194,6 @@ require("gitsigns").setup({
     map("<leader>hB", gs.toggle_current_line_blame, "Toggle inline blame")
   end,
 })
-
-require("which-key").setup({})
-require("which-key").add({ { "<leader>h", group = "Git changes" } })
 
 require("fzf-lua").setup({})
 vim.keymap.set("n", "<C-p>", "<cmd>FzfLua files<cr>", { desc = "Find file" })
