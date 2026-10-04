@@ -62,6 +62,8 @@ Each open file gets a tab. Click to switch, or `]b` / `[b` (*built-in*).
 
 Close with `Space x` or the tab's `×`. Don't use `:bd`: with the tree open it closes the editor window, and then Neovim quits. `Space x` refuses to close a file with unsaved changes; `:e!` reverts them first if you want to throw them away.
 
+A `:terminal` gets a tab too; closing it ends the shell.
+
 ## Code intelligence
 
 Works in TypeScript/JavaScript, shell, YAML, JSON and Lua.

@@ -58,7 +58,10 @@ local function close_buffer(bufnr)
   if bufnr == nil or bufnr == 0 then
     bufnr = vim.api.nvim_get_current_buf()
   end
-  if vim.bo[bufnr].modified then
+  -- A terminal is never "modified", but bdelete refuses to kill its running shell
+  -- without !; closing its tab should end the shell like VS Code's trash icon.
+  local is_terminal = vim.bo[bufnr].buftype == "terminal"
+  if not is_terminal and vim.bo[bufnr].modified then
     vim.notify(vim.fn.bufname(bufnr) .. " has unsaved changes", vim.log.levels.WARN)
     return
   end
@@ -70,7 +73,7 @@ local function close_buffer(bufnr)
       end
     end)
   end
-  vim.cmd.bdelete(tostring(bufnr))
+  vim.cmd.bdelete({ args = { tostring(bufnr) }, bang = is_terminal })
 end
 
 require("bufferline").setup({
