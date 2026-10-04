@@ -105,6 +105,7 @@ vim.keymap.set("n", "gd", function()
 end, { desc = "Go to definition" })
 
 vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<cr>", { desc = "Explorer" })
+vim.keymap.set("n", "<Esc>", "<cmd>Neotree focus<cr>", { desc = "Focus file tree" })
 vim.keymap.set("n", "<leader>g", "<cmd>Neotree git_status<cr>", { desc = "Changed files" })
 vim.keymap.set("n", "<leader>b", "<cmd>Neotree buffers<cr>", { desc = "Open buffers" })
 vim.keymap.set("n", "<leader>x", function() close_buffer() end, { desc = "Close file" })

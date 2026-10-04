@@ -11,11 +11,14 @@
 | `Space r` | Recently opened files |
 | `Space s` | Symbols (functions, classes) in the current file |
 | `Space e` | Toggle the file tree |
+| `Esc` in normal mode | Jump to the file tree (opens it if closed) |
 | `Space g` | Files changed in git |
 | `Space b` | Open buffers |
 | `Ctrl-o` / `Ctrl-i` | Jump back / forward, across files too (*built-in*) |
 
 `nvim .` opens the tree on the left with an empty editor beside it.
+
+`Esc` from insert mode, or to cancel a half-typed command like `d`, stays in the editor; only a plain normal-mode `Esc` jumps. If you habitually tap `Esc` twice to leave insert mode, the second one will take you to the tree.
 
 ### Fuzzy finder
 
