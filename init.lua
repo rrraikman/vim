@@ -17,10 +17,16 @@ vim.pack.add({
   "https://github.com/ibhagwan/fzf-lua",
   { src = "https://github.com/saghen/blink.cmp", version = vim.version.range("1") },
   "https://github.com/b0o/SchemaStore.nvim",
+  "https://github.com/nvim-lualine/lualine.nvim",
 })
 
 require("vscode").setup({})
 vim.cmd.colorscheme("vscode")
+
+require("lualine").setup({
+  options = { theme = "vscode", globalstatus = true },
+  extensions = { "neo-tree", "fzf" },
+})
 
 require("nvim-treesitter").install({ "typescript", "tsx", "javascript", "json" })
 vim.api.nvim_create_autocmd("FileType", {
