@@ -189,7 +189,6 @@ vim.keymap.set("n", "<leader>E", "<cmd>Neotree show toggle<cr>", { desc = "Show/
 vim.keymap.set("n", "<C-c>", "<cmd>confirm qa<cr>", { desc = "Quit" })
 vim.keymap.set("n", "<leader>g", "<cmd>Neotree git_status<cr>", { desc = "Changed files" })
 vim.keymap.set("n", "<leader>b", "<cmd>Neotree buffers<cr>", { desc = "Open buffers" })
-vim.keymap.set("n", "<leader>x", function() close_buffer() end, { desc = "Close file" })
 
 local float_term = {}
 local function toggle_float_term()

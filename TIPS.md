@@ -67,7 +67,7 @@ Each open file gets a tab. Click to switch, or `]b` / `[b` (*built-in*).
 
 | Command | Action |
 |---|---|
-| `:q`, `Space x` or the tab's `×` | Close the current file; the editor window stays. Refuses if there are unsaved changes |
+| `:q` or the tab's `×` | Close the current file; the editor window stays. Refuses if there are unsaved changes |
 | `:q!` | Close the file, discarding unsaved changes |
 | `:wq` | Save, then close the file |
 | `:q` with nothing open | Quit Neovim |
