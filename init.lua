@@ -4,6 +4,9 @@ vim.opt.packpath = vim.opt.runtimepath:get()
 vim.cmd.source("~/.vimrc")
 
 vim.g.mapleader = " "
+vim.opt.clipboard = "unnamedplus"
+vim.opt.undofile = true
+vim.opt.signcolumn = "yes"
 
 vim.pack.add({
   "https://github.com/nvim-lua/plenary.nvim",
@@ -18,6 +21,8 @@ vim.pack.add({
   { src = "https://github.com/saghen/blink.cmp", version = vim.version.range("1") },
   "https://github.com/b0o/SchemaStore.nvim",
   "https://github.com/nvim-lualine/lualine.nvim",
+  "https://github.com/lewis6991/gitsigns.nvim",
+  "https://github.com/folke/which-key.nvim",
 })
 
 require("vscode").setup({})
@@ -161,6 +166,25 @@ local function toggle_float_term()
   vim.cmd.startinsert()
 end
 vim.keymap.set("n", "<leader>\\", toggle_float_term, { desc = "Floating terminal" })
+
+require("gitsigns").setup({
+  on_attach = function(bufnr)
+    local gs = require("gitsigns")
+    local function map(lhs, rhs, desc)
+      vim.keymap.set("n", lhs, rhs, { buffer = bufnr, desc = desc })
+    end
+    map("]c", function() gs.nav_hunk("next") end, "Next change")
+    map("[c", function() gs.nav_hunk("prev") end, "Previous change")
+    map("<leader>hp", gs.preview_hunk, "Preview change")
+    map("<leader>hs", gs.stage_hunk, "Stage change")
+    map("<leader>hr", gs.reset_hunk, "Reset change")
+    map("<leader>hb", function() gs.blame_line({ full = true }) end, "Blame line")
+    map("<leader>hB", gs.toggle_current_line_blame, "Toggle inline blame")
+  end,
+})
+
+require("which-key").setup({})
+require("which-key").add({ { "<leader>h", group = "Git changes" } })
 
 require("fzf-lua").setup({})
 vim.keymap.set("n", "<C-p>", "<cmd>FzfLua files<cr>", { desc = "Find file" })

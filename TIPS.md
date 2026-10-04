@@ -2,6 +2,8 @@
 
 `Space` is the leader key. Mappings marked *built-in* come with Neovim; the rest are set in `init.lua`.
 
+Press `Space` (or `g`, `]`, `[`) and wait a moment: a menu lists every key that can follow.
+
 ## Getting around files
 
 | Key | Action |
@@ -65,6 +67,19 @@ Close with `Space x` or the tab's `×`. Don't use `:bd`: with the tree open it c
 
 A `:terminal` gets a tab too; closing it ends the shell.
 
+## Git
+
+Changed lines are marked in the left margin: green bar added, blue changed, red triangle deleted.
+
+| Key | Action |
+|---|---|
+| `]c` / `[c` | Next / previous change |
+| `Space h p` | Preview the change under the cursor |
+| `Space h s` | Stage just that change |
+| `Space h r` | Reset (discard) just that change |
+| `Space h b` | Blame for the current line, with the full commit message |
+| `Space h B` | Toggle blame shown inline at the end of every line |
+
 ## Terminal
 
 | Key | Action |
@@ -117,9 +132,11 @@ Suggestions pop up as you type, with docs beside them and parameter hints inside
 | `ciw` / `ci"` / `ci(` | Change the word / inside quotes / inside parens (*built-in*) |
 | `.` | Repeat the last change (*built-in*) |
 
+`y` and `p` use the macOS clipboard, so you can copy between Neovim and other apps. Undo history is saved per file, so `u` still works after closing and reopening one.
+
 ## Maintenance
 
 - `:lua vim.pack.update()` updates plugins. Commit the changed `nvim-pack-lock.json` so other machines get the same versions.
 - `./install.sh` is safe to rerun. It relinks the config and installs any missing language servers or tools.
 - Tree-sitter parsers build in the background on a new machine's first launch, so that session uses plain highlighting until they're done.
-- Language servers installed with npm are tied to the Node version that was active under nvm. After switching your default Node, rerun `./install.sh`.
+- `./install.sh` installs tools with Homebrew, falling back to npm only when Homebrew isn't there. Anything that did come from npm is tied to the Node version nvm had active; after switching your default Node, rerun `./install.sh`.
