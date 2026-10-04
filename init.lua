@@ -125,7 +125,14 @@ vim.keymap.set("n", "gd", function()
   })
 end, { desc = "Go to definition" })
 
-vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<cr>", { desc = "Explorer" })
+vim.keymap.set("n", "<leader>e", function()
+  if vim.bo.filetype == "neo-tree" then
+    vim.cmd("silent! wincmd p")
+  else
+    vim.cmd("Neotree focus")
+  end
+end, { desc = "Go to file tree / back" })
+vim.keymap.set("n", "<leader>E", "<cmd>Neotree show toggle<cr>", { desc = "Show/hide file tree" })
 -- Esc steps back through this session's jumps like k9s's back key. The jumplist is
 -- otherwise restored from shada, which would walk into previous sessions' files,
 -- and `nvim .` leaves an entry for its empty startup buffer that fails with E19.

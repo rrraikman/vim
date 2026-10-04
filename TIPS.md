@@ -12,7 +12,8 @@ Press `Space` (or `g`, `]`, `[`) and wait a moment: a menu lists every key that 
 | `Space /` | Search text across the project (ripgrep) |
 | `Space r` | Recently opened files |
 | `Space s` | Symbols (functions, classes) in the current file |
-| `Space e` | Toggle the file tree |
+| `Space e` | Go to the file tree (opening it if needed); from the tree, back to the file |
+| `Space E` | Show / hide the file tree without leaving the file |
 | `Space g` | Files changed in git |
 | `Space b` | Open buffers |
 | `Esc` / `Ctrl-i` | Back / forward through this session's jumps, like k9s or a browser |
@@ -56,7 +57,8 @@ Open pickers from the editor side, not with the cursor in the tree: the file ope
 | `.` / `Backspace` | Make the folder under the cursor the root / go up |
 | `[g` / `]g` | Previous / next git-modified file |
 | `<` / `>` | Switch between files, buffers and git views |
-| `Esc` | Back to the editor window you came from |
+| `Esc` | Back to the editor window you came from, leaving the tree open |
+| `q` | Close the tree |
 | `?` | All keys |
 
 ## Tabs
