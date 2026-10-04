@@ -8,4 +8,4 @@ git clone git@github.com:rrraikman/vim.git
 ./vim/install.sh
 ```
 
-This symlinks `.vimrc` and the Neovim config into your home directory, moving any existing files aside to `.bak`, and installs the TypeScript language server and tree-sitter CLI with npm if they're missing. Neovim (0.12+) installs its plugins on first launch.
+This symlinks `.vimrc` and the Neovim config into your home directory, moving any existing files aside to `.bak`, and installs any missing language servers (TypeScript, Bash, YAML, JSON, Lua) and tools (tree-sitter, fzf, ripgrep, fd, shellcheck) with npm and Homebrew. Neovim (0.12+) installs its plugins on first launch.

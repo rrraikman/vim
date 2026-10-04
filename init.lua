@@ -14,6 +14,9 @@ vim.pack.add({
   "https://github.com/neovim/nvim-lspconfig",
   { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
   "https://github.com/Mofiqul/vscode.nvim",
+  "https://github.com/ibhagwan/fzf-lua",
+  { src = "https://github.com/saghen/blink.cmp", version = vim.version.range("1") },
+  "https://github.com/b0o/SchemaStore.nvim",
 })
 
 require("vscode").setup({})
@@ -72,7 +75,24 @@ require("bufferline").setup({
   },
 })
 
-vim.lsp.enable("ts_ls")
+require("blink.cmp").setup({
+  keymap = { preset = "enter" },
+  completion = { documentation = { auto_show = true } },
+  signature = { enabled = true },
+})
+
+vim.lsp.config("jsonls", {
+  settings = { json = { schemas = require("schemastore").json.schemas(), validate = { enable = true } } },
+})
+vim.lsp.config("lua_ls", {
+  settings = {
+    Lua = {
+      runtime = { version = "LuaJIT" },
+      workspace = { library = { vim.env.VIMRUNTIME }, checkThirdParty = false },
+    },
+  },
+})
+vim.lsp.enable({ "ts_ls", "bashls", "yamlls", "jsonls", "lua_ls" })
 -- `new Foo(` returns both the class and its constructor; jump to the first like
 -- VS Code does instead of opening a picker
 vim.keymap.set("n", "gd", function()
@@ -88,3 +108,10 @@ vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<cr>", { desc = "Explorer" 
 vim.keymap.set("n", "<leader>g", "<cmd>Neotree git_status<cr>", { desc = "Changed files" })
 vim.keymap.set("n", "<leader>b", "<cmd>Neotree buffers<cr>", { desc = "Open buffers" })
 vim.keymap.set("n", "<leader>x", function() close_buffer() end, { desc = "Close file" })
+
+require("fzf-lua").setup({})
+vim.keymap.set("n", "<C-p>", "<cmd>FzfLua files<cr>", { desc = "Find file" })
+vim.keymap.set("n", "<leader>f", "<cmd>FzfLua files<cr>", { desc = "Find file" })
+vim.keymap.set("n", "<leader>/", "<cmd>FzfLua live_grep<cr>", { desc = "Search in files" })
+vim.keymap.set("n", "<leader>s", "<cmd>FzfLua lsp_document_symbols<cr>", { desc = "Symbols in file" })
+vim.keymap.set("n", "<leader>r", "<cmd>FzfLua oldfiles<cr>", { desc = "Recent files" })

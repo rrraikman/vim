@@ -1,9 +1,22 @@
 {
   "plugins": {
+    "SchemaStore.nvim": {
+      "rev": "d93ef1e8365950420ea3e706e82caf65dc9ff968",
+      "src": "https://github.com/b0o/SchemaStore.nvim"
+    },
+    "blink.cmp": {
+      "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
+      "src": "https://github.com/saghen/blink.cmp",
+      "version": "1.0.0 - 2.0.0"
+    },
     "bufferline.nvim": {
       "rev": "655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3",
       "src": "https://github.com/akinsho/bufferline.nvim",
       "version": "4.0.0 - 5.0.0"
+    },
+    "fzf-lua": {
+      "rev": "d5c12c6d72ed84554f0f8dacb84f20da094b6a2d",
+      "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "neo-tree.nvim": {
       "rev": "1a14083046d96e88e361d1da00761c40d45012f3",
