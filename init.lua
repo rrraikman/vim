@@ -160,7 +160,7 @@ local function toggle_float_term()
   end
   vim.cmd.startinsert()
 end
-vim.keymap.set("n", "<C-\\>", toggle_float_term, { desc = "Floating terminal" })
+vim.keymap.set("n", "<leader>\\", toggle_float_term, { desc = "Floating terminal" })
 
 require("fzf-lua").setup({})
 vim.keymap.set("n", "<C-p>", "<cmd>FzfLua files<cr>", { desc = "Find file" })

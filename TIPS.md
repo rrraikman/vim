@@ -69,12 +69,12 @@ A `:terminal` gets a tab too; closing it ends the shell.
 
 | Key | Action |
 |---|---|
-| `Ctrl-\` | Open the floating terminal; it reopens the same shell, history and running commands intact |
+| `Space \` | Open the floating terminal; it reopens the same shell, history and running commands intact |
 | `Esc` or `Ctrl-\` `Ctrl-\` (inside it) | Hide it |
 | `Ctrl-\` `Esc` (inside it) | Send a real `Esc` to the program in the shell (vim, `claude`, zsh vi mode) |
 | `Ctrl-\` `Ctrl-n` (inside it) | Normal mode, to scroll and copy output (*built-in*); `Esc` from there hides it |
 
-`exit` closes the shell; the next `Ctrl-\` starts a fresh one. For a terminal in a split instead, `:botright 15split | terminal` opens a panel along the bottom.
+`exit` closes the shell; the next `Space \` starts a fresh one. For a terminal in a split instead, `:botright 15split | terminal` opens a panel along the bottom.
 
 ## Code intelligence
 
