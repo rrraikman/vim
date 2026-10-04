@@ -17,7 +17,9 @@
 | `Ctrl-o` / `Ctrl-i` | Jump back / forward, across files too (*built-in*) |
 | `Ctrl-c` in normal mode | Quit Neovim, asking to save any unsaved files or stop a running terminal first |
 
-`nvim .` opens the tree on the left with an empty editor beside it.
+### Sessions
+
+`nvim` or `nvim .` in a folder reopens the files you had open there last time, with the tree beside them, like VS Code reopening a workspace. Sessions are per folder and git branch, so each branch remembers its own files. `nvim somefile` is a quick edit: it opens just that file and leaves the folder's saved session alone.
 
 ### Fuzzy finder
 
@@ -139,6 +141,8 @@ Suggestions pop up as you type, with docs beside them and parameter hints inside
 | `:noh` | Clear search highlighting (*built-in*) |
 | `ciw` / `ci"` / `ci(` | Change the word / inside quotes / inside parens (*built-in*) |
 | `.` | Repeat the last change (*built-in*) |
+
+Brackets and quotes close themselves: typing `(` gives `()`, typing `)` steps over the closer, and `Enter` between `{}` opens an indented line. `Backspace` on an empty pair deletes both halves.
 
 `y` and `p` use the macOS clipboard, so you can copy between Neovim and other apps. Undo history is saved per file, so `u` still works after closing and reopening one.
 

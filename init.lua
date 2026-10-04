@@ -1,3 +1,16 @@
+-- `nvim <dir>` behaves as `cd <dir> && nvim`: the folder's session restores and
+-- the tree opens beside it. Left as an argument, neo-tree's netrw hijack runs
+-- after the session loads and swaps the restored file for its alternate.
+if vim.fn.argc() == 1 and vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
+  local dir_buf = vim.fn.bufnr(vim.fn.argv(0))
+  vim.cmd.cd(vim.fn.fnameescape(vim.fn.argv(0)))
+  vim.cmd("silent! %argdelete")
+  if dir_buf > 0 then
+    pcall(vim.api.nvim_buf_delete, dir_buf, { force = true })
+  end
+  vim.g.started_in_directory = true
+end
+
 vim.opt.runtimepath:prepend("~/.vim")
 vim.opt.runtimepath:append("~/.vim/after")
 vim.opt.packpath = vim.opt.runtimepath:get()
@@ -8,6 +21,7 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.undofile = true
 vim.opt.signcolumn = "yes"
 vim.opt.winborder = "rounded"
+vim.opt.sessionoptions = { "buffers", "curdir", "folds", "tabpages", "winsize" }
 
 vim.pack.add({
   "https://github.com/nvim-lua/plenary.nvim",
@@ -23,6 +37,8 @@ vim.pack.add({
   "https://github.com/b0o/SchemaStore.nvim",
   "https://github.com/nvim-lualine/lualine.nvim",
   "https://github.com/lewis6991/gitsigns.nvim",
+  "https://github.com/nvim-mini/mini.pairs",
+  "https://github.com/folke/persistence.nvim",
 })
 
 require("vscode").setup({})
@@ -230,6 +246,64 @@ require("gitsigns").setup({
     map("<leader>hr", gs.reset_hunk, "Reset change")
     map("<leader>hb", function() gs.blame_line({ full = true }) end, "Blame line")
     map("<leader>hB", gs.toggle_current_line_blame, "Toggle inline blame")
+  end,
+})
+
+require("mini.pairs").setup()
+
+-- Restore the folder's (and git branch's) open files when nvim starts with no
+-- file arguments, like VS Code reopening a workspace. neo-tree is closed before
+-- saving because its window would come back as an empty buffer.
+require("persistence").setup()
+vim.api.nvim_create_autocmd("User", {
+  pattern = "PersistenceSavePre",
+  callback = function()
+    pcall(vim.cmd, "Neotree close")
+  end,
+})
+vim.api.nvim_create_autocmd("User", {
+  pattern = "PersistenceLoadPost",
+  callback = function() vim.cmd("Neotree show") end,
+})
+vim.api.nvim_create_autocmd("VimEnter", {
+  nested = true,
+  callback = function()
+    local args = vim.fn.argv()
+    if #args == 0 then
+      require("persistence").load()
+      if vim.g.started_in_directory then
+        vim.cmd("Neotree show")
+      end
+    else
+      -- `nvim somefile` is a quick edit; don't let it overwrite the folder's session
+      require("persistence").stop()
+    end
+  end,
+})
+
+-- Once a real file is open, drop empty [No Name] buffers that aren't on screen
+-- (left by close_buffer or startup) so they don't linger as tabs.
+vim.api.nvim_create_autocmd("BufEnter", {
+  callback = function(args)
+    if vim.api.nvim_buf_get_name(args.buf) == "" then
+      return
+    end
+    vim.schedule(function()
+      for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if
+          vim.api.nvim_buf_is_valid(buf)
+          and vim.bo[buf].buflisted
+          and vim.bo[buf].buftype == ""
+          and vim.api.nvim_buf_get_name(buf) == ""
+          and not vim.bo[buf].modified
+          and vim.api.nvim_buf_line_count(buf) == 1
+          and vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1] == ""
+          and #vim.fn.win_findbuf(buf) == 0
+        then
+          vim.api.nvim_buf_delete(buf, {})
+        end
+      end
+    end)
   end,
 })
 
