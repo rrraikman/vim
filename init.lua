@@ -7,6 +7,7 @@ vim.g.mapleader = " "
 vim.opt.clipboard = "unnamedplus"
 vim.opt.undofile = true
 vim.opt.signcolumn = "yes"
+vim.opt.winborder = "rounded"
 
 vim.pack.add({
   "https://github.com/nvim-lua/plenary.nvim",
