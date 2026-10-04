@@ -15,6 +15,7 @@
 | `Space g` | Files changed in git |
 | `Space b` | Open buffers |
 | `Ctrl-o` / `Ctrl-i` | Jump back / forward, across files too (*built-in*) |
+| `Ctrl-c` in normal mode | Quit Neovim, asking to save any unsaved files or stop a running terminal first |
 
 `nvim .` opens the tree on the left with an empty editor beside it.
 
