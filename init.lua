@@ -12,6 +12,20 @@ vim.pack.add({
   { src = "https://github.com/nvim-neo-tree/neo-tree.nvim", version = "v3.x" },
   { src = "https://github.com/akinsho/bufferline.nvim", version = vim.version.range("4") },
   "https://github.com/neovim/nvim-lspconfig",
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
+  "https://github.com/Mofiqul/vscode.nvim",
+})
+
+require("vscode").setup({})
+vim.cmd.colorscheme("vscode")
+
+require("nvim-treesitter").install({ "typescript", "tsx", "javascript", "json" })
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "typescript", "typescriptreact", "javascript", "javascriptreact", "json" },
+  callback = function()
+    -- pcall: the parser install above is async, so it may not be there on first launch
+    pcall(vim.treesitter.start)
+  end,
 })
 
 require("neo-tree").setup({
