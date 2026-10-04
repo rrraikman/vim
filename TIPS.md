@@ -16,12 +16,10 @@ Press `Space` (or `g`, `]`, `[`) and wait a moment: a menu lists every key that 
 | `Space E` | Show / hide the file tree without leaving the file |
 | `Space g` | Files changed in git |
 | `Space b` | Open buffers |
-| `Esc` / `Ctrl-i` | Back / forward through this session's jumps, like k9s or a browser |
+| `Ctrl-o` / `Ctrl-i` | Jump back / forward, across files too (*built-in*) |
 | `Ctrl-c` in normal mode | Quit Neovim, asking to save any unsaved files or stop a running terminal first |
 
 `nvim .` opens the tree on the left with an empty editor beside it.
-
-`Esc` goes back after `gd`, opening a file from the tree or a picker, searching, `gg`/`G`, and `]c`/`]d`. At the start of the session it does nothing. Leaving insert mode or cancelling a half-typed command like `d` doesn't count, but a second, reflexive `Esc` in normal mode will step back. `Ctrl-o` still works too.
 
 ### Fuzzy finder
 
