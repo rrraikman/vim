@@ -61,7 +61,15 @@ Open pickers from the editor side, not with the cursor in the tree: the file ope
 
 Each open file gets a tab. Click to switch, or `]b` / `[b` (*built-in*).
 
-Close with `Space x` or the tab's `×`. Don't use `:bd`: with the tree open it closes the editor window, and then Neovim quits. `Space x` refuses to close a file with unsaved changes; `:e!` reverts them first if you want to throw them away.
+| Command | Action |
+|---|---|
+| `:q`, `Space x` or the tab's `×` | Close the current file; the editor window stays. Refuses if there are unsaved changes |
+| `:q!` | Close the file, discarding unsaved changes |
+| `:wq` | Save, then close the file |
+| `:q` with nothing open | Quit Neovim |
+| `:qa` / `Ctrl-c` | Quit Neovim from anywhere |
+
+In a split, the tree or the floating terminal, `:q` closes that window as usual. Don't use `:bd`: with the tree open it closes the editor window, and then Neovim quits.
 
 A `:terminal` gets a tab too; closing it ends the shell.
 

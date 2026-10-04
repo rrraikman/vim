@@ -66,14 +66,14 @@ require("neo-tree").setup({
 -- :bdelete closes every window showing the buffer, and once only neo-tree's window
 -- is left, close_if_last_window quits nvim. Swap each window to another buffer
 -- first so the editor window survives.
-local function close_buffer(bufnr)
+local function close_buffer(bufnr, force)
   if bufnr == nil or bufnr == 0 then
     bufnr = vim.api.nvim_get_current_buf()
   end
   -- A terminal is never "modified", but bdelete refuses to kill its running shell
   -- without !; closing its tab should end the shell like VS Code's trash icon.
-  local is_terminal = vim.bo[bufnr].buftype == "terminal"
-  if not is_terminal and vim.bo[bufnr].modified then
+  force = force or vim.bo[bufnr].buftype == "terminal"
+  if not force and vim.bo[bufnr].modified then
     vim.notify(vim.fn.bufname(bufnr) .. " has unsaved changes", vim.log.levels.WARN)
     return
   end
@@ -85,8 +85,40 @@ local function close_buffer(bufnr)
       end
     end)
   end
-  vim.cmd.bdelete({ args = { tostring(bufnr) }, bang = is_terminal })
+  vim.cmd.bdelete({ args = { tostring(bufnr) }, bang = force })
 end
+
+-- :q in the last editor window would leave only neo-tree, which then quits nvim
+-- (close_if_last_window). There, close the file instead and keep the window; once
+-- nothing is left open, :q quits. Splits, the tree and floats close as usual.
+local function quit_window(bang)
+  local buf = vim.api.nvim_get_current_buf()
+  local editor_wins = vim.tbl_filter(function(win)
+    local b = vim.api.nvim_win_get_buf(win)
+    return vim.api.nvim_win_get_config(win).relative == "" and vim.bo[b].filetype ~= "neo-tree"
+  end, vim.api.nvim_tabpage_list_wins(0))
+  local in_editor = vim.bo[buf].filetype ~= "neo-tree" and vim.api.nvim_win_get_config(0).relative == ""
+  local cmd
+  if not in_editor or #editor_wins > 1 then
+    cmd = bang and "quit!" or "quit"
+  else
+    local others = vim.tbl_filter(function(b)
+      return b ~= buf and vim.bo[b].buflisted
+    end, vim.api.nvim_list_bufs())
+    if #others == 0 and vim.api.nvim_buf_get_name(buf) == "" and (bang or not vim.bo[buf].modified) then
+      cmd = bang and "qa!" or "confirm qa"
+    else
+      return close_buffer(buf, bang)
+    end
+  end
+  local ok, err = pcall(vim.cmd, cmd)
+  if not ok then
+    vim.notify((err:gsub("^Vim:", "")), vim.log.levels.ERROR)
+  end
+end
+vim.api.nvim_create_user_command("Quit", function(opts) quit_window(opts.bang) end, { bang = true })
+vim.cmd([[cnoreabbrev <expr> q getcmdtype() ==# ':' && getcmdline() ==# 'q' ? 'Quit' : 'q']])
+vim.cmd([[cnoreabbrev <expr> wq getcmdtype() ==# ':' && getcmdline() ==# 'wq' ? 'w <Bar> Quit' : 'wq']])
 
 require("bufferline").setup({
   options = {
