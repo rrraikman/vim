@@ -12,7 +12,7 @@
 | `Space s` | Symbols (functions, classes) in the current file |
 | `Space e` | Go to the file tree (opening it if needed); from the tree, back to the file |
 | `Space E` | Show / hide the file tree without leaving the file |
-| `Space g` | Files changed in git |
+| `Space g` | Files changed in git, shown in the tree; `>` switches back to the full tree |
 | `Space b` | Open buffers |
 | `Ctrl-o` / `Ctrl-i` | Jump back / forward, across files too (*built-in*) |
 | `Ctrl-c` in normal mode | Quit Neovim, asking to save any unsaved files or stop a running terminal first |
@@ -117,6 +117,8 @@ Works in TypeScript/JavaScript, shell, YAML, JSON and Lua.
 | `Ctrl-w d` | Show the full message for the error under the cursor (*built-in*) | hover |
 
 When `gd` finds more than one place (a class and its constructor, say), it jumps to the first; `:cnext` goes to the next.
+
+`grr` and `gri` open a list at the bottom. `Enter` jumps to an entry, `]q` / `[q` step through without the list, `:copen` gets back into it and `:cclose` (or `:q` inside it) closes it. `Ctrl-o` returns to where you started.
 
 `:checkhealth vim.lsp` shows which language servers are attached to the current file.
 
