@@ -44,6 +44,13 @@ vim.api.nvim_create_autocmd("FileType", {
 
 require("neo-tree").setup({
   close_if_last_window = true,
+  window = {
+    mappings = {
+      ["<esc>"] = function()
+        vim.cmd("silent! wincmd p")
+      end,
+    },
+  },
   filesystem = {
     follow_current_file = { enabled = true },
     use_libuv_file_watcher = true,
@@ -119,7 +126,26 @@ vim.keymap.set("n", "gd", function()
 end, { desc = "Go to definition" })
 
 vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<cr>", { desc = "Explorer" })
-vim.keymap.set("n", "<Esc>", "<cmd>Neotree focus<cr>", { desc = "Focus file tree" })
+-- Esc steps back through this session's jumps like k9s's back key. The jumplist is
+-- otherwise restored from shada, which would walk into previous sessions' files,
+-- and `nvim .` leaves an entry for its empty startup buffer that fails with E19.
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      vim.api.nvim_win_call(win, function() vim.cmd("clearjumps") end)
+    end
+  end,
+})
+vim.keymap.set("n", "<Esc>", function()
+  local jumps, pos = unpack(vim.fn.getjumplist())
+  for i = pos, 1, -1 do
+    local buf = jumps[i].bufnr
+    if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted and vim.api.nvim_buf_get_name(buf) ~= "" then
+      vim.cmd(("normal! %d\15"):format(pos - i + 1))
+      return
+    end
+  end
+end, { desc = "Back" })
 vim.keymap.set("n", "<C-c>", "<cmd>confirm qa<cr>", { desc = "Quit" })
 vim.keymap.set("n", "<leader>g", "<cmd>Neotree git_status<cr>", { desc = "Changed files" })
 vim.keymap.set("n", "<leader>b", "<cmd>Neotree buffers<cr>", { desc = "Open buffers" })

@@ -13,15 +13,14 @@ Press `Space` (or `g`, `]`, `[`) and wait a moment: a menu lists every key that 
 | `Space r` | Recently opened files |
 | `Space s` | Symbols (functions, classes) in the current file |
 | `Space e` | Toggle the file tree |
-| `Esc` in normal mode | Jump to the file tree (opens it if closed) |
 | `Space g` | Files changed in git |
 | `Space b` | Open buffers |
-| `Ctrl-o` / `Ctrl-i` | Jump back / forward, across files too (*built-in*) |
+| `Esc` / `Ctrl-i` | Back / forward through this session's jumps, like k9s or a browser |
 | `Ctrl-c` in normal mode | Quit Neovim, asking to save any unsaved files or stop a running terminal first |
 
 `nvim .` opens the tree on the left with an empty editor beside it.
 
-`Esc` from insert mode, or to cancel a half-typed command like `d`, stays in the editor; only a plain normal-mode `Esc` jumps. If you habitually tap `Esc` twice to leave insert mode, the second one will take you to the tree.
+`Esc` goes back after `gd`, opening a file from the tree or a picker, searching, `gg`/`G`, and `]c`/`]d`. At the start of the session it does nothing. Leaving insert mode or cancelling a half-typed command like `d` doesn't count, but a second, reflexive `Esc` in normal mode will step back. `Ctrl-o` still works too.
 
 ### Fuzzy finder
 
@@ -57,6 +56,7 @@ Open pickers from the editor side, not with the cursor in the tree: the file ope
 | `.` / `Backspace` | Make the folder under the cursor the root / go up |
 | `[g` / `]g` | Previous / next git-modified file |
 | `<` / `>` | Switch between files, buffers and git views |
+| `Esc` | Back to the editor window you came from |
 | `?` | All keys |
 
 ## Tabs
