@@ -105,6 +105,8 @@ Changed lines are marked in the left margin: green bar added, blue changed, red 
 
 Works in TypeScript/JavaScript, shell, YAML, JSON and Lua.
 
+`.gotmpl` files (Crossplane function-go-templating) get highlighting for both the template and the YAML it renders, but no completion or error checking. `gcc` there comments with `{{/* */}}`, so the line drops out of the rendered YAML.
+
 | Key | Action | VS Code |
 |---|---|---|
 | `gd` | Go to definition | F12 |

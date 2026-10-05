@@ -51,9 +51,21 @@ require("lualine").setup({
   extensions = { "neo-tree", "fzf" },
 })
 
-require("nvim-treesitter").install({ "typescript", "tsx", "javascript", "json" })
+-- Crossplane function-go-templating templates render YAML, so they use the helm
+-- parser: Go templates with the text outside {{ }} highlighted as YAML
+vim.filetype.add({ extension = { gotmpl = "gotmpl" } })
+vim.treesitter.language.register("helm", "gotmpl")
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "typescript", "typescriptreact", "javascript", "javascriptreact", "json" },
+  pattern = "gotmpl",
+  callback = function()
+    -- A template comment drops the line from the rendered output; YAML's # would not
+    vim.bo.commentstring = "{{/* %s */}}"
+  end,
+})
+
+require("nvim-treesitter").install({ "typescript", "tsx", "javascript", "json", "helm", "yaml" })
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "typescript", "typescriptreact", "javascript", "javascriptreact", "json", "gotmpl" },
   callback = function()
     -- pcall: the parser install above is async, so it may not be there on first launch
     pcall(vim.treesitter.start)
