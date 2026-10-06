@@ -179,18 +179,45 @@ vim.lsp.config("lua_ls", {
     },
   },
 })
+-- TypeScript 7 (the native compiler) ships no tsserver.js, so ts_ls can't run on
+-- it; those projects get the tsc server (`tsc --lsp`) instead. Projects with no
+-- local install count as 7+ too, since the global typescript is 7.
+local function local_typescript_major(bufnr)
+  for dir in vim.fs.parents(vim.api.nvim_buf_get_name(bufnr)) do
+    local pkg = vim.fs.joinpath(dir, "node_modules/typescript/package.json")
+    if vim.uv.fs_stat(pkg) then
+      local ok, manifest = pcall(vim.json.decode, table.concat(vim.fn.readfile(pkg), "\n"))
+      return ok and tonumber(tostring(manifest.version):match("^(%d+)")) or nil
+    end
+  end
+end
+local function uses_native_typescript(bufnr)
+  return (local_typescript_major(bufnr) or math.huge) >= 7
+end
+
 -- In pnpm workspaces the lockfile sits at the monorepo root, whose node_modules
 -- has no typescript (it stays local to each package), so tsserver dies on init.
 -- Prefer the nearest tsconfig/jsconfig, which sits next to a local install.
 local default_ts_root_dir = vim.lsp.config.ts_ls.root_dir
 vim.lsp.config("ts_ls", {
   root_dir = function(bufnr, on_dir)
+    if uses_native_typescript(bufnr) then
+      return
+    end
     default_ts_root_dir(bufnr, function(project_root)
       on_dir(vim.fs.root(bufnr, { "tsconfig.json", "jsconfig.json" }) or project_root)
     end)
   end,
 })
-vim.lsp.enable({ "ts_ls", "bashls", "yamlls", "jsonls", "lua_ls" })
+local default_tsc_root_dir = vim.lsp.config.tsc.root_dir
+vim.lsp.config("tsc", {
+  root_dir = function(bufnr, on_dir)
+    if uses_native_typescript(bufnr) then
+      default_tsc_root_dir(bufnr, on_dir)
+    end
+  end,
+})
+vim.lsp.enable({ "ts_ls", "tsc", "bashls", "yamlls", "jsonls", "lua_ls" })
 -- `new Foo(` returns both the class and its constructor; jump to the first like
 -- VS Code does instead of opening a picker
 vim.keymap.set("n", "gd", function()

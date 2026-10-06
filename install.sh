@@ -50,6 +50,7 @@ install_tool() {
 }
 
 install_tool typescript-language-server typescript-language-server typescript typescript-language-server
+install_tool tsc typescript typescript
 install_tool bash-language-server bash-language-server bash-language-server
 install_tool yaml-language-server yaml-language-server yaml-language-server
 install_tool vscode-json-language-server vscode-langservers-extracted vscode-langservers-extracted
