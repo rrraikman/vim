@@ -92,6 +92,7 @@ require("neo-tree").setup({
       hide_gitignored = false,
       hide_ignored = false,
       hide_by_name = { ".git", ".DS_Store", "thumbs.db" },
+      show_hidden_count = false,
     },
   },
 })
