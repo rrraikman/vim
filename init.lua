@@ -178,6 +178,17 @@ vim.lsp.config("lua_ls", {
     },
   },
 })
+-- In pnpm workspaces the lockfile sits at the monorepo root, whose node_modules
+-- has no typescript (it stays local to each package), so tsserver dies on init.
+-- Prefer the nearest tsconfig/jsconfig, which sits next to a local install.
+local default_ts_root_dir = vim.lsp.config.ts_ls.root_dir
+vim.lsp.config("ts_ls", {
+  root_dir = function(bufnr, on_dir)
+    default_ts_root_dir(bufnr, function(project_root)
+      on_dir(vim.fs.root(bufnr, { "tsconfig.json", "jsconfig.json" }) or project_root)
+    end)
+  end,
+})
 vim.lsp.enable({ "ts_ls", "bashls", "yamlls", "jsonls", "lua_ls" })
 -- `new Foo(` returns both the class and its constructor; jump to the first like
 -- VS Code does instead of opening a picker
