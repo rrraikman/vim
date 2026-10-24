@@ -120,7 +120,7 @@ Works in TypeScript/JavaScript, shell, YAML, JSON and Lua.
 
 When `gd` finds more than one place (a class and its constructor, say), it jumps to the first; `:cnext` goes to the next.
 
-`grr` and `gri` open a list at the bottom. `Enter` jumps to an entry, `]q` / `[q` step through without the list, `:copen` gets back into it and `:cclose` (or `:q` inside it) closes it. `Ctrl-o` returns to where you started.
+`grr` and `gri` open a list at the bottom. `Enter` jumps to an entry, `]q` / `[q` step through without the list, `:copen` gets back into it and `Esc` closes it, from the list or the code. `Ctrl-o` returns to where you started.
 
 `:checkhealth vim.lsp` shows which language servers are attached to the current file.
 

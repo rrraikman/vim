@@ -228,6 +228,7 @@ vim.keymap.set("n", "gd", function()
     end,
   })
 end, { desc = "Go to definition" })
+vim.keymap.set("n", "<Esc>", "<cmd>cclose<cr><Esc>", { desc = "Close references list" })
 
 vim.keymap.set("n", "<leader>e", function()
   if vim.bo.filetype == "neo-tree" then
