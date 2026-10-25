@@ -26,38 +26,46 @@ link .vimrc "$HOME/.vimrc"
 link init.lua "$HOME/.config/nvim/init.lua"
 link nvim-pack-lock.json "$HOME/.config/nvim/nvim-pack-lock.json"
 
-# install_tool <command> <brew formula> [npm package...]: installs with Homebrew,
-# or with npm when Homebrew isn't available, unless <command> is already on PATH.
-# Homebrew comes first so the language servers don't depend on the Node version
-# nvm has active.
-install_tool() {
+# npm_tool <command> <package...>: installs a tool that runs on Node with npm, under
+# the Node version nvm has active, unless <command> is already on PATH.
+npm_tool() {
+  cmd="$1"
+  shift
+  if command -v "$cmd" >/dev/null 2>&1; then
+    echo "ok       $cmd"
+  elif command -v npm >/dev/null 2>&1; then
+    npm install -g "$@"
+    echo "installed $cmd (npm)"
+  else
+    echo "skipped  $cmd: install Node with nvm and rerun" >&2
+  fi
+}
+
+# brew_tool <command> <formula>: installs a native tool with Homebrew, unless
+# <command> is already on PATH.
+brew_tool() {
   cmd="$1"
   formula="$2"
-  shift 2
   if command -v "$cmd" >/dev/null 2>&1; then
     echo "ok       $cmd"
   elif command -v brew >/dev/null 2>&1; then
     brew install "$formula"
     echo "installed $cmd (brew)"
-  elif [ $# -gt 0 ] && command -v npm >/dev/null 2>&1; then
-    npm install -g "$@"
-    echo "installed $cmd (npm)"
-  elif [ $# -gt 0 ]; then
-    echo "skipped  $cmd: install Homebrew or npm and rerun" >&2
   else
     echo "skipped  $cmd: install Homebrew and rerun" >&2
   fi
 }
 
-install_tool typescript-language-server typescript-language-server typescript typescript-language-server
-install_tool tsc typescript typescript
-install_tool bash-language-server bash-language-server bash-language-server
-install_tool yaml-language-server yaml-language-server yaml-language-server
-install_tool vscode-json-language-server vscode-langservers-extracted vscode-langservers-extracted
+npm_tool typescript-language-server typescript-language-server
+npm_tool bash-language-server bash-language-server
+npm_tool yaml-language-server yaml-language-server
+npm_tool vscode-json-language-server vscode-langservers-extracted
+# TypeScript 7's tsc is a native binary, served to Neovim with `tsc --lsp`
+brew_tool tsc typescript
 # nvim-treesitter builds its parsers with this and a C compiler
-install_tool tree-sitter tree-sitter-cli tree-sitter-cli
-install_tool lua-language-server lua-language-server
-install_tool shellcheck shellcheck
-install_tool fzf fzf
-install_tool rg ripgrep
-install_tool fd fd
+brew_tool tree-sitter tree-sitter-cli
+brew_tool lua-language-server lua-language-server
+brew_tool shellcheck shellcheck
+brew_tool fzf fzf
+brew_tool rg ripgrep
+brew_tool fd fd
