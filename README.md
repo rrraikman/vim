@@ -3,6 +3,8 @@ Configuration files for vim
 
 ## Setup
 
+Needs Neovim 0.12+, Homebrew, and Node installed with nvm.
+
 ```sh
 git clone git@github.com:rrraikman/vim.git
 ./vim/install.sh

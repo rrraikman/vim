@@ -155,4 +155,4 @@ Brackets and quotes close themselves: typing `(` gives `()`, typing `)` steps ov
 - `:lua vim.pack.update()` updates plugins. Commit the changed `nvim-pack-lock.json` so other machines get the same versions.
 - `./install.sh` is safe to rerun. It relinks the config and installs any missing language servers or tools.
 - Tree-sitter parsers build in the background on a new machine's first launch, so that session uses plain highlighting until they're done.
-- `./install.sh` installs the Node-based language servers with npm, so they belong to the Node version nvm had active. When you install a newer Node, pass `--reinstall-packages-from=<old version>` to `nvm install`, or rerun `./install.sh` after switching.
+- `./install.sh` installs the Node-based language servers with npm, so they belong to the Node version nvm had active. When you install a newer Node, pass `--reinstall-packages-from=<old version>` to `nvm install`, or rerun `./install.sh` after switching. Then restart Neovim from a new terminal, or run `nvm use default` first: Neovim finds the servers on the PATH of the shell that started it.
